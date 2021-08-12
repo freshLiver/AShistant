@@ -38,18 +38,18 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabSaveSelectedRange"
+                android:id="@+id/fabSaveCroppedArea"
                 style="@style/Style.AssistantFab"
                 android:src="@drawable/ic_screenshot_save_local" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabUploadSelectedRange"
+                android:id="@+id/fabUploadCroppedArea"
                 style="@style/Style.AssistantFab"
                 android:src="@drawable/ic_screenshot_upload_link" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabShareSelectedRange"
+                android:id="@+id/fabShareCroppedArea"
                 style="@style/Style.AssistantFab"
                 android:src="@drawable/ic_screenshot_share" />
 
