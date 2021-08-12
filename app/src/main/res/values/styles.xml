@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <style name="Theme.Activity.Translucent" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">@android:color/transparent</item>
@@ -7,5 +8,20 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Style.AssistantFab" parent="Theme.MaterialComponents">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/marginVAssistantFab</item>
+        <item name="android:layout_marginBottom">@dimen/marginVAssistantFab</item>
+        <item name="android:layout_marginLeft">@dimen/marginHAssistantFab</item>
+        <item name="android:layout_marginRight">@dimen/marginHAssistantFab</item>
+        <item name="fabSize">mini</item>
+    </style>
+
+    <style name="Style.AssistantFab.Discard" parent="Style.AssistantFab">
+        <item name="backgroundTint">#FF0000</item>
+        <item name="android:layout_marginRight">32dp</item>
     </style>
 </resources>

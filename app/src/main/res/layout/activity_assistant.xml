@@ -14,7 +14,8 @@
             android:id="@+id/cropImageView_Assistant"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="90" />
+            android:layout_weight="90"
+            app:cropInitialCropWindowPaddingRatio="0" />
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,7 +23,35 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
-            android:background="#235870">
+            android:background="#235870"
+            android:gravity="center">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabDiscardScreenshot"
+                style="@style/Style.AssistantFab.Discard"
+                android:src="@drawable/ic_screenshot_discard"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabEditScreenshot"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_edit" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabSaveSelectedRange"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_save_local" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabUploadSelectedRange"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_upload_link" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabShareSelectedRange"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_share" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
