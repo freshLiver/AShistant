@@ -1,4 +1,4 @@
-package com.freshliver.ashistant;
+package com.freshliver.ashistant.assistant;
 
 
 import android.os.Build;

@@ -1,6 +1,5 @@
-package com.freshliver.ashistant;
+package com.freshliver.ashistant.assistant;
 
-import android.app.ActivityManager;
 import android.app.assist.AssistContent;
 import android.app.assist.AssistStructure;
 import android.content.Context;
@@ -9,21 +8,14 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.voice.VoiceInteractionSession;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.freshliver.ashistant.AssistantActivity;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class AssistantSession extends VoiceInteractionSession {

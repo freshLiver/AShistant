@@ -1,4 +1,4 @@
-package com.freshliver.ashistant;
+package com.freshliver.ashistant.assistant;
 
 
 import android.os.Build;
@@ -7,6 +7,7 @@ import android.service.voice.VoiceInteractionSession;
 import android.service.voice.VoiceInteractionSessionService;
 
 import androidx.annotation.RequiresApi;
+
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class AssistantSessionService extends VoiceInteractionSessionService {
