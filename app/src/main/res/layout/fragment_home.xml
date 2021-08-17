@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".assistant.HomeFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llBtnContainer_Assistant"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabDiscardScreenshot"
+                style="@style/Style.AssistantFab.Discard"
+                android:src="@drawable/ic_screenshot_discard" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabEditScreenshot"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_edit" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabSaveCroppedArea"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_save_local" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabUploadCroppedArea"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_upload_link" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabShareCroppedArea"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_share" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
