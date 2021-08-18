@@ -45,9 +45,9 @@ public class AssistantSession extends VoiceInteractionSession {
             screenshot.compress(Bitmap.CompressFormat.PNG, 100, out);
 
             /* create new intent add put image data into it */
-            Intent intent = new Intent(this.getContext(), AssistantActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(AssistantActivity.ScreenshotDataKey, out.toByteArray());
+            Intent intent = new Intent(this.getContext(), AssistantActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(AssistantActivity.ScreenshotDataKey, out.toByteArray());
 
             /* launch activity */
             this.getContext().startActivity(intent);

@@ -16,6 +16,9 @@
 
         <activity
                 android:name=".AssistantActivity"
+                android:excludeFromRecents="true"
+                android:launchMode="singleInstance"
+                android:noHistory="true"
                 android:theme="@style/Theme.Activity.Translucent" />
 
         <activity android:name=".MainActivity">
