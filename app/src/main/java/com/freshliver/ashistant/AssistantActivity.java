@@ -8,13 +8,14 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.freshliver.ashistant.assistant.AssistantFragments;
-import com.freshliver.ashistant.assistant.ResetCropImageViewListener;
-import com.freshliver.ashistant.assistant.SetFragmentListener;
+import com.freshliver.ashistant.assistant.CropImageViewInterface;
+import com.freshliver.ashistant.assistant.AssistantFragmentSetter;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class AssistantActivity extends AppCompatActivity implements ResetCropImageViewListener, SetFragmentListener {
+public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
     public static final String ScreenshotDataKey = "Screenshot";
+    protected Bitmap screenshot;
 
     protected ViewGroup btnContainer;
     protected CropImageView cropImageView;
@@ -28,9 +29,16 @@ public class AssistantActivity extends AppCompatActivity implements ResetCropIma
 
         if (savedInstanceState == null) {
 
+            /* extract screenshot from bundle and convert to image */
+            byte[] screenshotData = this.getIntent().getByteArrayExtra(AssistantActivity.ScreenshotDataKey);
+            this.screenshot = BitmapFactory.decodeByteArray(screenshotData, 0, screenshotData.length);
+
             /* find items from layout */
             this.btnContainer = this.findViewById(R.id.llBtnContainer_Assistant);
             this.cropImageView = this.findViewById(R.id.cropImageView_Assistant);
+
+            /* init crop image view */
+            this.resetCropImageView();
 
             /* set home fragment */
             setFragment(AssistantFragments.Home);
@@ -49,19 +57,51 @@ public class AssistantActivity extends AppCompatActivity implements ResetCropIma
     }
 
 
+    /**
+     * CropImageView Interface Impl
+     **/
+
     @Override
-    public void resetCropImageView(boolean editable) {
-        /* extract screenshot from bundle and convert to image */
-        byte[] screenshotData = this.getIntent().getByteArrayExtra(AssistantActivity.ScreenshotDataKey);
-        Bitmap screenshot = BitmapFactory.decodeByteArray(screenshotData, 0, screenshotData.length);
+    public void resetCropImageView() {
 
-        /* init and show screenshot  */
-        this.cropImageView.setImageBitmap(screenshot);
+        this.cropImageView.setImageBitmap(this.screenshot);
+        this.cropImageView.setAutoZoomEnabled(true);
+        this.cropImageView.setCropShape(CropImageView.CropShape.RECTANGLE);
+        this.cropImageView.setGuidelines(CropImageView.Guidelines.ON);
 
-        /* set min crop size if not editable */
-        if (editable)
-            this.cropImageView.setMinCropResultSize(1, 1);
-        else
-            this.cropImageView.setMinCropResultSize(screenshot.getWidth(), screenshot.getHeight());
+        /* set min size to image size to make no crop padding */
+        this.cropImageView.resetCropRect();
+    }
+
+
+    @Override
+    public void cropImage() {
+        Bitmap cropped = this.cropImageView.getCroppedImage();
+        this.cropImageView.setImageBitmap(cropped);
+        this.cropImageView.resetCropRect();
+    }
+
+
+    @Override
+    public void flipVertically() {
+        this.cropImageView.flipImageVertically();
+    }
+
+
+    @Override
+    public void flipHorizontally() {
+        this.cropImageView.flipImageHorizontally();
+    }
+
+
+    @Override
+    public void rotateLeft90() {
+        this.cropImageView.rotateImage(-90);
+    }
+
+
+    @Override
+    public void rotateRight90() {
+        this.cropImageView.rotateImage(90);
     }
 }

@@ -12,8 +12,9 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabEditorBack"
                 style="@style/Style.AssistantFab.Done"
-                android:src="@drawable/ic_screenshot_done" />
+                android:src="@drawable/ic_screenshot_back" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,9 +23,15 @@
                 android:src="@drawable/ic_screenshot_crop" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabFlipScreenshot"
+                android:id="@+id/fabFlipScreenshotHorizontally"
                 style="@style/Style.AssistantFab"
-                android:src="@drawable/ic_screenshot_flip" />
+                android:src="@drawable/ic_screenshot_flip_horizontal" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabFlipScreenshotVertically"
+                style="@style/Style.AssistantFab"
+                android:rotation="90"
+                android:src="@drawable/ic_screenshot_flip_horizontal" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabRotateScreenshotLeft"
@@ -35,12 +42,6 @@
                 android:id="@+id/fabRotateScreenshotRight"
                 style="@style/Style.AssistantFab"
                 android:src="@drawable/ic_screenshot_rotate_right" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                style="@style/Style.AssistantFab"
-                android:src="@drawable/ic_screenshot_flip"
-                android:visibility="gone" />
-        <!--TODO-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

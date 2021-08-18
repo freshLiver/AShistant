@@ -15,21 +15,19 @@
         <item name="tint">#FFFFFF</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/marginVAssistantFab</item>
-        <item name="android:layout_marginBottom">@dimen/marginVAssistantFab</item>
-        <item name="android:layout_marginLeft">@dimen/marginHAssistantFab</item>
-        <item name="android:layout_marginRight">@dimen/marginHAssistantFab</item>
+        <item name="android:layout_marginTop">@dimen/AssistantFabVerticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/AssistantFabVerticalMargin</item>
+        <item name="android:layout_marginLeft">@dimen/AssistantFabHorizontalMargin</item>
+        <item name="android:layout_marginRight">@dimen/AssistantFabHorizontalMargin</item>
         <item name="fabSize">mini</item>
     </style>
 
     <style name="Style.AssistantFab.Discard" parent="Style.AssistantFab">
         <item name="backgroundTint">#E91E63</item>
-        <item name="android:layout_marginRight">32dp</item>
     </style>
 
     <style name="Style.AssistantFab.Done" parent="Style.AssistantFab">
         <item name="backgroundTint">#009688</item>
-        <item name="android:layout_marginRight">32dp</item>
     </style>
 
 </resources>

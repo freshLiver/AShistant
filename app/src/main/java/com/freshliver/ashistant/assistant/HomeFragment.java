@@ -31,11 +31,11 @@ import java.util.Calendar;
 public class HomeFragment extends Fragment {
 
     protected CropImageView cropImageView;
-    protected FloatingActionButton saveCroppedArea, uploadCroppedArea;
+    protected FloatingActionButton resetScreenshot, saveCroppedArea, uploadCroppedArea;
     protected FloatingActionButton shareCroppedArea, editScreenshot, discardScreenshot;
 
-    protected ResetCropImageViewListener resetCropImageViewListener;
-    protected SetFragmentListener switchFragmentListener;
+    protected CropImageViewInterface cropImageViewInterface;
+    protected AssistantFragmentSetter switchFragmentListener;
 
 
     public static HomeFragment newInstance() {
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(layout, savedInstanceState);
 
         /* init listeners */
-        this.resetCropImageViewListener = (AssistantActivity) this.requireActivity();
+        this.cropImageViewInterface = (AssistantActivity) this.requireActivity();
         this.switchFragmentListener = (AssistantActivity) this.requireActivity();
 
         /* get crop image from activity */
@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
 
         /* find fabs from layout */
         this.discardScreenshot = layout.findViewById(R.id.fabDiscardScreenshot);
+        this.resetScreenshot = layout.findViewById(R.id.fabResetScreenshot);
         this.editScreenshot = layout.findViewById(R.id.fabEditScreenshot);
         this.saveCroppedArea = layout.findViewById(R.id.fabSaveCroppedArea);
         this.uploadCroppedArea = layout.findViewById(R.id.fabUploadCroppedArea);
@@ -71,15 +72,13 @@ public class HomeFragment extends Fragment {
 
         /* set fab onclick functions */
         this.discardScreenshot.setOnClickListener((view) -> this.requireActivity().finish());
+        this.resetScreenshot.setOnClickListener((view) -> this.cropImageViewInterface.resetCropImageView());
         this.editScreenshot.setOnClickListener((view) -> this.switchFragmentListener.setFragment(AssistantFragments.Editor));
         this.saveCroppedArea.setOnClickListener((view) -> HomeFragment.saveScreenshot(view, this.cropImageView));
         this.uploadCroppedArea.setOnClickListener((view) -> {
         });
         this.shareCroppedArea.setOnClickListener((view) -> {
         });
-
-        /* init crop image view */
-        this.resetCropImageViewListener.resetCropImageView(false);
     }
 
 

@@ -14,7 +14,12 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabDiscardScreenshot"
                 style="@style/Style.AssistantFab.Discard"
-                android:src="@drawable/ic_screenshot_discard" />
+                android:src="@drawable/ic_screenshot_exit" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabResetScreenshot"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_reset" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabEditScreenshot"

@@ -1,5 +1,5 @@
 package com.freshliver.ashistant.assistant;
 
-public interface SetFragmentListener {
+public interface AssistantFragmentSetter {
     void setFragment(AssistantFragments type);
 }
