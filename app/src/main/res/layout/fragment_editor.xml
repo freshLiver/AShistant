@@ -3,7 +3,45 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F00"
         tools:context=".assistant.EditorFragment">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                style="@style/Style.AssistantFab.Done"
+                android:src="@drawable/ic_screenshot_done" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCropScreenshot"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_crop" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabFlipScreenshot"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_flip" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabRotateScreenshotLeft"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_rotate_left" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabRotateScreenshotRight"
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_rotate_right" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                style="@style/Style.AssistantFab"
+                android:src="@drawable/ic_screenshot_flip"
+                android:visibility="gone" />
+        <!--TODO-->
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>
