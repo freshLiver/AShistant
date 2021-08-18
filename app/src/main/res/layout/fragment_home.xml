@@ -12,7 +12,7 @@
             android:gravity="center">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabDiscardScreenshot"
+                android:id="@+id/fabExitScreenshot"
                 style="@style/Style.AssistantFab.Discard"
                 android:src="@drawable/ic_screenshot_exit" />
 

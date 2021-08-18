@@ -7,4 +7,5 @@ public interface CropImageViewInterface {
     void flipVertically();
     void rotateLeft90();
     void rotateRight90();
+    void saveCroppedArea();
 }
