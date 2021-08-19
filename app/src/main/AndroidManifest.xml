@@ -21,7 +21,10 @@
                 android:noHistory="true"
                 android:theme="@style/Theme.Activity.Translucent" />
 
-        <activity android:name=".MainActivity">
+        <activity
+                android:name=".MainActivity"
+                android:excludeFromRecents="true"
+                android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,6 +45,16 @@
         <service
                 android:name=".assistant.AssistantSessionService"
                 android:permission="android.permission.BIND_VOICE_INTERACTION" />
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.freshliver.ashistant.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_provider" />
+        </provider>
     </application>
 
 </manifest>

@@ -1,12 +1,9 @@
 package com.freshliver.ashistant.assistant;
 
-import android.app.assist.AssistContent;
-import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Bundle;
 import android.service.voice.VoiceInteractionSession;
 import android.widget.Toast;
 
@@ -22,12 +19,6 @@ public class AssistantSession extends VoiceInteractionSession {
 
     public AssistantSession(Context context) {
         super(context);
-    }
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
     }
 
 
@@ -55,14 +46,5 @@ public class AssistantSession extends VoiceInteractionSession {
         } else {
             Toast.makeText(this.getContext(), "screenshot null", Toast.LENGTH_SHORT).show();
         }
-
     }
-
-
-    @Override
-    public void onHandleAssist(Bundle data, AssistStructure structure, AssistContent content) {
-        super.onHandleAssist(data, structure, content);
-        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-    }
-
 }

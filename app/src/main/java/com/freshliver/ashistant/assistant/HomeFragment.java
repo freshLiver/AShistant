@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.freshliver.ashistant.AssistantActivity;
 import com.freshliver.ashistant.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,19 +58,12 @@ public class HomeFragment extends Fragment {
         /* set fab onclick functions */
         this.exitScreenshot.setOnClickListener((view) -> this.requireActivity().finish());
         this.editScreenshot.setOnClickListener((view) -> this.switchFragmentListener.setFragment(AssistantFragments.Editor));
-        this.resetScreenshot.setOnClickListener((view) -> this.cropImageViewInterface.resetCropImageView());
+        this.resetScreenshot.setOnClickListener((view) -> this.cropImageViewInterface.resetCropImageView(null));
         this.saveCroppedArea.setOnClickListener((view) -> this.cropImageViewInterface.saveCroppedArea());
 
         /* TODO */
         this.uploadCroppedArea.setOnClickListener((view) -> {
         });
-        this.shareCroppedArea.setOnClickListener((view) -> {
-        });
-    }
-
-
-    protected static void saveScreenshot(View view, CropImageView civ) {
-
-
+        this.shareCroppedArea.setOnClickListener((view) -> this.cropImageViewInterface.shareCroppedArea());
     }
 }
