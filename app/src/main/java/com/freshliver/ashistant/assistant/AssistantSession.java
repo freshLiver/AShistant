@@ -3,18 +3,16 @@ package com.freshliver.ashistant.assistant;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.service.voice.VoiceInteractionSession;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.freshliver.ashistant.AssistantActivity;
 
 import java.io.ByteArrayOutputStream;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
+
 public class AssistantSession extends VoiceInteractionSession {
 
     public AssistantSession(Context context) {
