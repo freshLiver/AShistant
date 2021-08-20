@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.freshliver.ashistant.assistant.AssistantFragments;
@@ -28,17 +27,9 @@ import java.util.Calendar;
 public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
     public static final String ScreenshotDataKey = "Screenshot";
-    protected Bitmap screenshot;
+    protected Bitmap fullScreenshot;
 
-    protected ViewGroup btnContainer;
     protected CropImageView cropImageView;
-
-
-    protected Bitmap extractScreenshot(Intent intent) {
-        /* extract screenshot from bundle and convert to image */
-        byte[] screenshotData = intent.getByteArrayExtra(AssistantActivity.ScreenshotDataKey);
-        return BitmapFactory.decodeByteArray(screenshotData, 0, screenshotData.length);
-    }
 
 
     @Override
@@ -47,7 +38,6 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
         setContentView(R.layout.activity_assistant);
 
         /* find items from layout */
-        this.btnContainer = this.findViewById(R.id.llBtnContainer_Assistant);
         this.cropImageView = this.findViewById(R.id.cropImageView_Assistant);
     }
 
@@ -91,10 +81,13 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
     public void resetCropImageView(@Nullable Intent newIntent) {
 
         /* if new intent passed (onNewIntent called), get new  */
-        if (newIntent != null)
-            this.screenshot = extractScreenshot(newIntent);
+        if (newIntent != null) {
+            /* extract screenshot from bundle and convert to image */
+            byte[] screenshotData = newIntent.getByteArrayExtra(AssistantActivity.ScreenshotDataKey);
+            this.fullScreenshot = BitmapFactory.decodeByteArray(screenshotData, 0, screenshotData.length);
+        }
 
-        this.cropImageView.setImageBitmap(this.screenshot);
+        this.cropImageView.setImageBitmap(this.fullScreenshot);
         this.cropImageView.setAutoZoomEnabled(true);
         this.cropImageView.setCropShape(CropImageView.CropShape.RECTANGLE);
         this.cropImageView.setGuidelines(CropImageView.Guidelines.ON);
@@ -194,7 +187,8 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
             Toast.makeText(this, successMsg, Toast.LENGTH_SHORT).show();
             return dstFile;
 
-        } catch (IOException | RuntimeException e) {
+        }
+        catch (IOException | RuntimeException e) {
             /* log and show error msg */
             e.printStackTrace();
             Toast.makeText(this, "Failed to save image.", Toast.LENGTH_SHORT).show();
