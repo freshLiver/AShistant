@@ -16,7 +16,6 @@ import com.freshliver.ashistant.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Calendar;
 
 
 public class AssistantSession extends VoiceInteractionSession {
@@ -40,21 +39,16 @@ public class AssistantSession extends VoiceInteractionSession {
 
             try {
                 // save screenshot tmp file to temp file dir
-                File tmpDir = new File(this.getContext().getFilesDir(), "temps");
-
-                String filename = String.format(
-                        "screenshot-%s.png",
-                        DatetimeUtils.getFormattedDatetime(Calendar.getInstance().getTime(), "mm-ss")
-                );
-
                 File tmpScreenshot = FileUtils.saveBitmapToFile(
-                        screenshot, tmpDir, filename,
+                        screenshot,
+                        FileUtils.getInternalFile(this.getContext(), Uri.parse("temps")),
+                        String.format("screenshot-%s.png", DatetimeUtils.formatCurrentTime("mm-ss")),
                         FileUtils.DEFAULT_COMPRESS_FORMAT, FileUtils.DEFAULT_COMPRESS_QUALITY
                 );
 
-                // get temp file uri
+                // get temp file uri and then convert to path
                 Uri screenshotUri = FileProvider.getUriForFile(this.getContext(), FileUtils.FILE_PROVIDER_AUTHORITY, tmpScreenshot);
-                screenshotPath = FileUtils.getInternalFile(this.getContext(),screenshotUri).toString();
+                screenshotPath = FileUtils.getInternalFile(this.getContext(), screenshotUri).toString();
 
             }
             catch (FileNotFoundException e) {
