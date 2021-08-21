@@ -1,6 +1,5 @@
 package com.freshliver.ashistant;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -37,31 +36,25 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assistant);
 
-        /* find items from layout */
+        // find items from layout
         this.cropImageView = this.findViewById(R.id.cropImageView_Assistant);
+
+        // set default fragment
+        this.setFragment(AssistantFragments.Home);
     }
 
 
     @Override
     protected void onNewIntent(Intent newIntent) {
         super.onNewIntent(newIntent);
-        /* reset intent to new intent */
-        this.resetCropImageView(newIntent);
-    }
-
-
-    @Override
-    protected void onStart() {
-        /* init crop image view */
-        super.onStart();
-        this.resetCropImageView(this.getIntent());
+        this.setIntent(newIntent);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        this.setFragment(AssistantFragments.Home);
+        this.resetCropImageView(this.getIntent());
     }
 
 
@@ -78,7 +71,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
      **/
 
     @Override
-    public void resetCropImageView(@Nullable Intent newIntent) {
+    public void resetCropImageView(Intent newIntent) {
 
         /* if new intent passed (onNewIntent called), get new  */
         if (newIntent != null) {
