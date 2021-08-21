@@ -1,11 +1,12 @@
 package com.freshliver.ashistant.utils;
 
-import android.content.ContentProvider;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,9 +19,31 @@ public final class FileUtils {
 
     public static final String FILE_PROVIDER_AUTHORITY = "com.freshliver.ashistant.provider";
 
+    public static final String INTERNAL_TEMP_DIRNAME = "temps";
+    public static final File EXTERNAL_DOWNLOAD_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
 
     private FileUtils() {
         // private constructor for static class
+    }
+
+
+    //
+    // get external file
+    //
+
+
+    public static File getExternalDownloadFile(String filename) {
+        return new File(EXTERNAL_DOWNLOAD_DIR, filename);
+    }
+
+    //
+    // get internal file or uri
+    //
+
+
+    public static Uri getInternalFileUri(Context context, File internalFile) {
+        return FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, internalFile);
     }
 
 
@@ -29,19 +52,44 @@ public final class FileUtils {
     }
 
 
-    public static File saveBitmapToFile(Bitmap bitmap, File dir, String filename, Bitmap.CompressFormat format, int quality)
-            throws FileNotFoundException {
+    public static File getInternalTempFile(Context context, String filename) {
+        return getInternalFile(context, Uri.parse(String.format("%s/%s", INTERNAL_TEMP_DIRNAME, filename)));
+    }
 
-        /* create path if not exists */
+
+    //
+    // save bitmap to file
+    //
+
+
+    public static File saveBitmapAsPNG(Bitmap bitmap, File file) throws FileNotFoundException {
+        return saveBitmapAsFile(bitmap, file, DEFAULT_COMPRESS_FORMAT, DEFAULT_COMPRESS_QUALITY);
+    }
+
+
+    public static File saveBitmapAsFile(Bitmap bitmap, File file, Bitmap.CompressFormat format, int quality) throws FileNotFoundException {
+
+        // file or directory
+        File dir = file.isDirectory() ? file : file.getParentFile();
+
+        // target dir should not be null
+        if (dir == null)
+            throw new FileNotFoundException("Src File Pathname does not name a parent.");
+
+        // create path if not exists
         assert dir.exists() || dir.mkdirs();
 
         /* try output (replace) bitmap to target dst */
-        File targetFile = new File(dir, filename);
-        bitmap.compress(format, quality, new FileOutputStream(targetFile, false));
+        bitmap.compress(format, quality, new FileOutputStream(file, false));
 
-        /* return dst file or null(if exception catch) */
-        return targetFile;
+        /* return dst file if no exception caught */
+        return file;
     }
+
+
+    //
+    // load bitmap from file
+    //
 
 
     public static Bitmap loadBitmapFromFile(File srcFile) {

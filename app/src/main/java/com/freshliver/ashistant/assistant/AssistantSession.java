@@ -33,36 +33,28 @@ public class AssistantSession extends VoiceInteractionSession {
 
         /* start a dialog while screenshot not null */
         if (screenshot != null) {
-
-            /* convert bitmap to byte array and save a temp file */
-            String screenshotPath = null;
-
             try {
                 // save screenshot tmp file to temp file dir
-                File tmpScreenshot = FileUtils.saveBitmapToFile(
+                String screenshotPath = FileUtils.saveBitmapAsPNG(
                         screenshot,
-                        FileUtils.getInternalFile(this.getContext(), Uri.parse("temps")),
-                        String.format("screenshot-%s.png", DatetimeUtils.formatCurrentTime("mm-ss")),
-                        FileUtils.DEFAULT_COMPRESS_FORMAT, FileUtils.DEFAULT_COMPRESS_QUALITY
-                );
+                        FileUtils.getInternalTempFile(
+                                this.getContext(),
+                                String.format("screenshot-%s.png", DatetimeUtils.formatCurrentTime("mm-ss"))
+                        )
+                ).getAbsolutePath();
 
-                // get temp file uri and then convert to path
-                Uri screenshotUri = FileProvider.getUriForFile(this.getContext(), FileUtils.FILE_PROVIDER_AUTHORITY, tmpScreenshot);
-                screenshotPath = FileUtils.getInternalFile(this.getContext(), screenshotUri).toString();
+                // create share intent add put screenshot data
+                Intent intent = new Intent(this.getContext(), AssistantActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .putExtra(AssistantActivity.SCREENSHOT_URI_STRING, screenshotPath);
 
+                // launch share intent
+                this.getContext().startActivity(intent);
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();
+                Toast.makeText(this.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
-
-            /* create new intent add put image data into it */
-            Intent intent = new Intent(this.getContext(), AssistantActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(AssistantActivity.SCREENSHOT_URI_STRING, screenshotPath);
-
-            /* launch activity */
-            this.getContext().startActivity(intent);
 
         } else {
             Toast.makeText(this.getContext(), "screenshot null", Toast.LENGTH_SHORT).show();
