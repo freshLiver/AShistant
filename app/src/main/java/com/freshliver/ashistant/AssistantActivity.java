@@ -26,9 +26,9 @@ import java.util.Calendar;
 
 public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
-    public static final String ScreenshotDataKey = "Screenshot";
-    protected Bitmap fullScreenshot;
+    public static final String SCREENSHOT_URI_STRING = "ScreenshotUri";
 
+    protected Bitmap fullScreenshot;
     protected CropImageView cropImageView;
 
 
@@ -82,9 +82,9 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
 
         /* if new intent passed (onNewIntent called), get new  */
         if (newIntent != null) {
-            /* extract screenshot from bundle and convert to image */
-            byte[] screenshotData = newIntent.getByteArrayExtra(AssistantActivity.ScreenshotDataKey);
-            this.fullScreenshot = BitmapFactory.decodeByteArray(screenshotData, 0, screenshotData.length);
+            /* get screenshot path from bundle and load it */
+            File screenshotFile = new File(newIntent.getStringExtra(AssistantActivity.SCREENSHOT_URI_STRING));
+            this.fullScreenshot = BitmapFactory.decodeFile(screenshotFile.toString());
         }
 
         this.cropImageView.setImageBitmap(this.fullScreenshot);
