@@ -11,7 +11,6 @@ import com.freshliver.ashistant.main.MainViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,17 +39,23 @@ public class MainActivity extends AppCompatActivity {
         this.viewModel.getCount().observe(this, iValue -> this.showCountView.setText(String.valueOf(iValue)));
         this.incCount.setOnClickListener(view -> this.viewModel.incCount(true));
         this.decCount.setOnClickListener(view -> this.viewModel.incCount(false));
-        this.loadingBtn.setOnClickListener((view) -> new LoadingDialog<String>().startTask(
-                this.getSupportFragmentManager(),
-                () -> this.delay(1000),
-                this::done
-        ));
+        this.loadingBtn.setOnClickListener((view) -> new LoadingDialog.Builder<String>()
+                .setTask(() -> this.delay(1000))
+                .setCallback(this::done)
+                .build().start(this.getSupportFragmentManager())
+        );
     }
 
 
-    public String delay(int ms) throws InterruptedException {
-        Thread.sleep(ms);
-        return String.format(Locale.getDefault(), "%d ms!!", ms);
+    public String delay(int ms) {
+        try {
+            Thread.sleep(ms);
+            return String.format(Locale.getDefault(), "%d ms!!", ms);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+            return "Interrupted";
+        }
     }
 
 

@@ -1,13 +1,11 @@
 package com.freshliver.ashistant;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +14,16 @@ import androidx.fragment.app.FragmentManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class LoadingDialog<Result> {
+
+public class LoadingDialog<ResultType> {
+
 
     public static class Dialog extends DialogFragment {
-
-        private ProgressBar progressBar;
 
         @Override
         public View onCreateView(@NonNull @NotNull LayoutInflater inflater,
@@ -46,39 +45,71 @@ public class LoadingDialog<Result> {
         void onCompleted(Result result);
     }
 
+
     private final Dialog dialog;
     private final Executor executor;
     private final Handler uiThreadHandler;
 
+    private final Callable<ResultType> task;
+    private final Callback<ResultType> callback;
 
-    public LoadingDialog() {
+
+    private LoadingDialog(Builder<ResultType> builder) {
         this.dialog = new Dialog();
         this.executor = Executors.newSingleThreadExecutor();
         this.uiThreadHandler = new Handler(Looper.getMainLooper());
+
+        this.task = builder.task;
+        this.callback = builder.callback;
     }
 
 
-    public void startTask(FragmentManager manager, Callable<Result> task, @Nullable Callback<Result> callback) {
+    public void start(FragmentManager manager) {
+        if (this.task != null) {
+            this.executor.execute(() -> {
+                try {
+                    // do background task here
+                    ResultType result = this.task.call();
 
-        this.executor.execute(() -> {
-            try {
-                // do background task here
-                Result result = task.call();
+                    // handling callback task if exists
+                    if (this.callback != null)
+                        this.callback.onCompleted(result);
 
-                // handling callback task if exists
-                if (callback != null)
-                    callback.onCompleted(result);
+                    // after all task done, dispose dialog
+                    this.uiThreadHandler.post(this.dialog::dismiss);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
-                // after all task done, dispose dialog
-                this.uiThreadHandler.post(this.dialog::dismiss);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        // show dialog soon after task executed
-        this.dialog.show(manager, "Task");
+            // show dialog soon after task executed
+            this.dialog.show(manager, "Task");
+        }
     }
 
+
+    public static class Builder<ResultType> {
+
+        private Callable<ResultType> task = null;
+        private Callback<ResultType> callback = null;
+
+
+        public LoadingDialog<ResultType> build() {
+            return new LoadingDialog<>(this);
+        }
+
+
+        public Builder<ResultType> setTask(Callable<ResultType> task) {
+            this.task = Objects.requireNonNull(task);
+            return this;
+        }
+
+
+        public Builder<ResultType> setCallback(Callback<ResultType> callback) {
+            this.callback = Objects.requireNonNull(callback);
+            return this;
+        }
+
+    }
 }
