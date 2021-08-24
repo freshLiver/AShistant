@@ -12,4 +12,5 @@ public interface CropImageViewInterface {
     void rotateRight90();
     void saveCroppedArea();
     void shareCroppedArea();
+    void uploadCroppedArea();
 }

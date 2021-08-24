@@ -3,6 +3,8 @@ package com.freshliver.ashistant;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import com.freshliver.ashistant.assistant.AssistantFragments;
 import com.freshliver.ashistant.assistant.CropImageViewInterface;
 import com.freshliver.ashistant.assistant.AssistantFragmentSetter;
+import com.freshliver.ashistant.models.ImgurApi;
 import com.freshliver.ashistant.utils.BitmapUtils;
 import com.freshliver.ashistant.utils.DatetimeUtils;
 import com.freshliver.ashistant.utils.FileUtils;
@@ -164,5 +167,32 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
             e.printStackTrace();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    @Override
+    public void uploadCroppedArea() {
+
+        // save file to cache and get uri
+        String cachedFilename = "cachedUpload.png";
+        File cachedFile = FileUtils.getCacheFile(this, cachedFilename);
+
+        // upload image and launch a loading dialog to wait
+        new LoadingDialog<String>().startTask(
+                this.getSupportFragmentManager(),
+
+                // save cropped area to cache dir and upload it to imgur
+                () -> ImgurApi.uploadPublicImage(BitmapUtils.saveAsPNG(this.cropImageView.getCroppedImage(), cachedFile)),
+
+                // show and copy upload result
+                result -> runOnUiThread(() -> {
+                    // copy result to clipboard
+                    ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText("Imgur Public Upload Result", result));
+
+                    // show result
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+                })
+        );
     }
 }

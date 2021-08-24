@@ -61,9 +61,7 @@ public class HomeFragment extends Fragment {
         this.resetScreenshot.setOnClickListener((view) -> this.cropImageViewInterface.resetCropImageView(null));
         this.saveCroppedArea.setOnClickListener((view) -> this.cropImageViewInterface.saveCroppedArea());
 
-        /* TODO */
-        this.uploadCroppedArea.setOnClickListener((view) -> {
-        });
+        this.uploadCroppedArea.setOnClickListener((view) -> this.cropImageViewInterface.uploadCroppedArea());
         this.shareCroppedArea.setOnClickListener((view) -> this.cropImageViewInterface.shareCroppedArea());
     }
 }
