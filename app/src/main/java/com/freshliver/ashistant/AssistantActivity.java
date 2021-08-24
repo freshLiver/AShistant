@@ -21,6 +21,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
@@ -155,19 +156,21 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
             // save cropped image to temp dir and get uri
             File croppedFile = BitmapUtils.saveAsPNG(
                     this.cropImageView.getCroppedImage(),
-                    FileUtils.getInternalTempFile(this, "ashistant_cropped.png")
+                    FileUtils.getInternalCacheFile(this, "share.png")
             );
+
+            String mimetype = FileUtils.getMimeTypeFromFile(croppedFile);
 
             // start a share intent
             Intent shareIntent = new Intent()
                     .setAction(Intent.ACTION_SEND)
-                    .setType("image/png")
+                    .setType(mimetype)
                     .putExtra(Intent.EXTRA_STREAM, FileUtils.getInternalFileUri(this, croppedFile));
             this.startActivity(Intent.createChooser(shareIntent, "Share Screenshot"));
         }
-        catch (FileNotFoundException e) {
+        catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "I/O error happened when sharing cropped area.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -176,8 +179,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
     public void uploadCroppedArea() {
 
         // save file to cache and get uri
-        String cachedFilename = "cachedUpload.png";
-        File cachedFile = FileUtils.getCacheFile(this, cachedFilename);
+        File cachedFile = FileUtils.getInternalCacheFile(this, "upload.png");
 
         // upload image and launch a loading dialog to wait
         new LoadingDialog.Builder<String>()

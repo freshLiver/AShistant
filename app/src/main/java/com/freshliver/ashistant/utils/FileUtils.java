@@ -65,21 +65,7 @@ public final class FileUtils {
     }
 
     //
-    // get cache files
-    //
-
-
-    public static File getCacheFile(Context context, String filename) {
-        return new File(context.getCacheDir(), filename);
-    }
-
-
-    public static Uri getCacheFileUri(Context context, File cachedFile) {
-        return Uri.fromFile(cachedFile);
-    }
-
-    //
-    // get internal file or uri
+    // get an internal file or its uri
     //
 
 
@@ -95,5 +81,10 @@ public final class FileUtils {
 
     public static File getInternalTempFile(Context context, String filename) {
         return getInternalFile(context, Uri.parse(String.format("%s/%s", INTERNAL_TEMP_DIRNAME, filename)));
+    }
+
+
+    public static File getInternalCacheFile(Context context, String filename) {
+        return new File(context.getCacheDir(), filename);
     }
 }
