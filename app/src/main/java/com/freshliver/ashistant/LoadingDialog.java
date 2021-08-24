@@ -50,8 +50,10 @@ public class LoadingDialog<ResultType> {
     private final Executor executor;
     private final Handler uiThreadHandler;
 
-    private final Callable<ResultType> task;
-    private final Callback<ResultType> callback;
+    private final Callable<ResultType> asyncTask;
+    private final Callback<ResultType> asyncCallback;
+    private final Callback<ResultType> uiCallback;
+    private ResultType result;
 
 
     private LoadingDialog(Builder<ResultType> builder) {
@@ -59,27 +61,35 @@ public class LoadingDialog<ResultType> {
         this.executor = Executors.newSingleThreadExecutor();
         this.uiThreadHandler = new Handler(Looper.getMainLooper());
 
-        this.task = builder.task;
-        this.callback = builder.callback;
+        this.asyncTask = builder.asyncTask;
+        this.asyncCallback = builder.asyncCallback;
+        this.uiCallback = builder.uiCallback;
     }
 
 
     public void start(FragmentManager manager) {
-        if (this.task != null) {
+        if (this.asyncTask != null) {
+
+            // do async tasks
             this.executor.execute(() -> {
                 try {
                     // do background task here
-                    ResultType result = this.task.call();
+                    this.result = this.asyncTask.call();
 
-                    // handling callback task if exists
-                    if (this.callback != null)
-                        this.callback.onCompleted(result);
+                    // do async callback task if exists
+                    if (this.asyncCallback != null)
+                        this.asyncCallback.onCompleted(this.result);
 
-                    // after all task done, dispose dialog
-                    this.uiThreadHandler.post(this.dialog::dismiss);
+                    // do ui callback task if exists
+                    if (this.uiCallback != null)
+                        this.uiThreadHandler.post(() -> this.uiCallback.onCompleted(this.result));
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                }
+                // after all task done or any error, dismiss dialog
+                finally {
+                    this.uiThreadHandler.post(this.dialog::dismiss);
                 }
             });
 
@@ -91,8 +101,9 @@ public class LoadingDialog<ResultType> {
 
     public static class Builder<ResultType> {
 
-        private Callable<ResultType> task = null;
-        private Callback<ResultType> callback = null;
+        private Callable<ResultType> asyncTask = null;
+        private Callback<ResultType> asyncCallback = null;
+        private Callback<ResultType> uiCallback = null;
 
 
         public LoadingDialog<ResultType> build() {
@@ -100,14 +111,20 @@ public class LoadingDialog<ResultType> {
         }
 
 
-        public Builder<ResultType> setTask(Callable<ResultType> task) {
-            this.task = Objects.requireNonNull(task);
+        public Builder<ResultType> setAsyncTask(Callable<ResultType> asyncTask) {
+            this.asyncTask = Objects.requireNonNull(asyncTask);
             return this;
         }
 
 
-        public Builder<ResultType> setCallback(Callback<ResultType> callback) {
-            this.callback = Objects.requireNonNull(callback);
+        public Builder<ResultType> setAsyncCallback(Callback<ResultType> asyncCallback) {
+            this.asyncCallback = Objects.requireNonNull(asyncCallback);
+            return this;
+        }
+
+
+        public Builder<ResultType> setUICallback(Callback<ResultType> uiCallback) {
+            this.uiCallback = Objects.requireNonNull(uiCallback);
             return this;
         }
 

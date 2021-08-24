@@ -181,17 +181,17 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
         new LoadingDialog.Builder<String>()
 
                 // save cropped area to cache dir and upload it to imgur
-                .setTask(() -> ImgurApi.uploadPublicImage(BitmapUtils.saveAsPNG(this.cropImageView.getCroppedImage(), cachedFile)))
+                .setAsyncTask(() -> ImgurApi.uploadPublicImage(BitmapUtils.saveAsPNG(this.cropImageView.getCroppedImage(), cachedFile)))
 
                 // show and copy upload result
-                .setCallback(result -> runOnUiThread(() -> {
+                .setUICallback(result -> {
                     // copy result to clipboard
                     ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("Imgur Public Upload Result", result));
 
                     // show result
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-                }))
+                })
                 .build().start(this.getSupportFragmentManager());
     }
 }

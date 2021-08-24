@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         this.incCount.setOnClickListener(view -> this.viewModel.incCount(true));
         this.decCount.setOnClickListener(view -> this.viewModel.incCount(false));
         this.loadingBtn.setOnClickListener((view) -> new LoadingDialog.Builder<String>()
-                .setTask(() -> this.delay(1000))
-                .setCallback(this::done)
+                .setAsyncTask(() -> this.delay(1000))
+                .setUICallback(result -> Toast.makeText(this, result, Toast.LENGTH_SHORT).show())
                 .build().start(this.getSupportFragmentManager())
         );
     }
@@ -56,10 +56,5 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             return "Interrupted";
         }
-    }
-
-
-    public void done(String result) {
-        runOnUiThread(() -> Toast.makeText(this, result, Toast.LENGTH_SHORT).show());
     }
 }
