@@ -24,7 +24,12 @@ import java.io.FileNotFoundException;
 
 public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
-    public static final String SCREENSHOT_URI_STRING = "ScreenshotUri";
+    /**
+     * This static field is for sending screenshot bitmap from InteractiveSession.
+     * <p>
+     * The main reason why I use this static field, instead of using bundle, is trying to speed up the launch speed.
+     */
+    public static Bitmap SCREENSHOT_TEMP = null;
 
     protected Bitmap fullScreenshot;
     protected CropImageView cropImageView;
@@ -72,12 +77,9 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
     @Override
     public void resetCropImageView(Intent newIntent) {
 
-        /* if new intent passed (onNewIntent called), get new  */
-        if (newIntent != null) {
-            /* get screenshot path from bundle and load it */
-            String screenshotPath = newIntent.getStringExtra(AssistantActivity.SCREENSHOT_URI_STRING);
-            this.fullScreenshot = BitmapUtils.loadFromFile(new File(screenshotPath));
-        }
+        /* if new intent passed (onNewIntent called), get and set a new screenshot */
+        if (newIntent != null)
+            this.fullScreenshot = AssistantActivity.SCREENSHOT_TEMP;
 
         this.cropImageView.setImageBitmap(this.fullScreenshot);
         this.cropImageView.setAutoZoomEnabled(true);
