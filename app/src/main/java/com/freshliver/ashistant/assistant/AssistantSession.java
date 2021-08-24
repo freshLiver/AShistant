@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.freshliver.ashistant.AssistantActivity;
+import com.freshliver.ashistant.utils.BitmapUtils;
 import com.freshliver.ashistant.utils.DatetimeUtils;
 import com.freshliver.ashistant.utils.FileUtils;
 
@@ -35,7 +36,7 @@ public class AssistantSession extends VoiceInteractionSession {
         if (screenshot != null) {
             try {
                 // save screenshot tmp file to temp file dir
-                String screenshotPath = FileUtils.saveBitmapAsPNG(
+                String screenshotPath = BitmapUtils.saveAsPNG(
                         screenshot,
                         FileUtils.getInternalTempFile(
                                 this.getContext(),

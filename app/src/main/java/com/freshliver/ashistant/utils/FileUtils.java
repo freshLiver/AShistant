@@ -5,12 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.webkit.MimeTypeMap;
 
 import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public final class FileUtils {
 
@@ -29,12 +32,50 @@ public final class FileUtils {
 
 
     //
+    // Mimetypes
+    //
+
+
+    /**
+     * @param file the file whose MimeType you want to know
+     * @return MimeType String of this src file
+     * @throws IOException I/O error while probing content type of src file
+     */
+    public static String getMimeTypeFromFile(File file) throws IOException {
+        return Files.probeContentType(file.getAbsoluteFile().toPath());
+    }
+
+
+    public static String getExtensionFromMimetype(String mimetype) {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimetype);
+    }
+
+
+    public static String getExtensionFromFile(File file) throws IOException {
+        return getExtensionFromMimetype(getMimeTypeFromFile(file));
+    }
+
+    //
     // get external file
     //
 
 
     public static File getExternalDownloadFile(String filename) {
         return new File(EXTERNAL_DOWNLOAD_DIR, filename);
+    }
+
+    //
+    // get cache files
+    //
+
+
+    public static File getCacheFile(Context context, String filename) {
+        return new File(context.getCacheDir(), filename);
+    }
+
+
+    public static Uri getCacheFileUri(Context context, File cachedFile) {
+        return Uri.fromFile(cachedFile);
     }
 
     //
@@ -55,45 +96,4 @@ public final class FileUtils {
     public static File getInternalTempFile(Context context, String filename) {
         return getInternalFile(context, Uri.parse(String.format("%s/%s", INTERNAL_TEMP_DIRNAME, filename)));
     }
-
-
-    //
-    // save bitmap to file
-    //
-
-
-    public static File saveBitmapAsPNG(Bitmap bitmap, File file) throws FileNotFoundException {
-        return saveBitmapAsFile(bitmap, file, DEFAULT_COMPRESS_FORMAT, DEFAULT_COMPRESS_QUALITY);
-    }
-
-
-    public static File saveBitmapAsFile(Bitmap bitmap, File file, Bitmap.CompressFormat format, int quality) throws FileNotFoundException {
-
-        // file or directory
-        File dir = file.isDirectory() ? file : file.getParentFile();
-
-        // target dir should not be null
-        if (dir == null)
-            throw new FileNotFoundException("Src File Pathname does not name a parent.");
-
-        // create path if not exists
-        assert dir.exists() || dir.mkdirs();
-
-        /* try output (replace) bitmap to target dst */
-        bitmap.compress(format, quality, new FileOutputStream(file, false));
-
-        /* return dst file if no exception caught */
-        return file;
-    }
-
-
-    //
-    // load bitmap from file
-    //
-
-
-    public static Bitmap loadBitmapFromFile(File srcFile) {
-        return BitmapFactory.decodeFile(srcFile.getPath());
-    }
-
 }

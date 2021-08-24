@@ -1,30 +1,23 @@
 package com.freshliver.ashistant;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.Toast;
 
 import com.freshliver.ashistant.assistant.AssistantFragments;
 import com.freshliver.ashistant.assistant.CropImageViewInterface;
 import com.freshliver.ashistant.assistant.AssistantFragmentSetter;
+import com.freshliver.ashistant.utils.BitmapUtils;
 import com.freshliver.ashistant.utils.DatetimeUtils;
 import com.freshliver.ashistant.utils.FileUtils;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class AssistantActivity extends AppCompatActivity implements CropImageViewInterface, AssistantFragmentSetter {
 
@@ -80,7 +73,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
         if (newIntent != null) {
             /* get screenshot path from bundle and load it */
             String screenshotPath = newIntent.getStringExtra(AssistantActivity.SCREENSHOT_URI_STRING);
-            this.fullScreenshot = FileUtils.loadBitmapFromFile(new File(screenshotPath));
+            this.fullScreenshot = BitmapUtils.loadFromFile(new File(screenshotPath));
         }
 
         this.cropImageView.setImageBitmap(this.fullScreenshot);
@@ -131,7 +124,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
 
         try {
             // try to save crop area to dst path
-            File result = FileUtils.saveBitmapAsPNG(
+            File result = BitmapUtils.saveAsPNG(
                     this.cropImageView.getCroppedImage(),
                     FileUtils.getExternalDownloadFile(
                             String.format(
@@ -155,7 +148,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
     public void shareCroppedArea() {
         try {
             // save cropped image to temp dir and get uri
-            File croppedFile = FileUtils.saveBitmapAsPNG(
+            File croppedFile = BitmapUtils.saveAsPNG(
                     this.cropImageView.getCroppedImage(),
                     FileUtils.getInternalTempFile(this, "ashistant_cropped.png")
             );
