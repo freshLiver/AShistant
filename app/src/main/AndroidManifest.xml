@@ -23,9 +23,7 @@
                 android:theme="@style/Theme.Activity.Translucent" />
 
         <activity
-                android:name=".MainActivity"
-                android:excludeFromRecents="true"
-                android:noHistory="true">
+                android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
