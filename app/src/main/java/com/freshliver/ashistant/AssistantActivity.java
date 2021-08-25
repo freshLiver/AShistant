@@ -46,6 +46,7 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
 
         // set default fragment
         this.setFragment(AssistantFragments.Home);
+        this.resetCropImageView(this.getIntent());
     }
 
 
@@ -53,12 +54,6 @@ public class AssistantActivity extends AppCompatActivity implements CropImageVie
     protected void onNewIntent(Intent newIntent) {
         super.onNewIntent(newIntent);
         this.setIntent(newIntent);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         this.resetCropImageView(this.getIntent());
     }
 
