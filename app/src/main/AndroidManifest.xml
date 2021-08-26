@@ -5,7 +5,7 @@
     <uses-permission android:name="BIND_VOICE_INTERACTION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
             android:allowBackup="true"
@@ -15,6 +15,13 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AShistant">
 
+        <activity android:name=".PreferenceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
                 android:name=".AssistantActivity"
                 android:excludeFromRecents="true"
@@ -22,13 +29,7 @@
                 android:noHistory="true"
                 android:theme="@style/Theme.Activity.Translucent" />
 
-        <activity
-                android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <service
                 android:name=".assistant.AssistantService"

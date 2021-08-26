@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AShistant</string>
+
+    <string name="Preference_MainSettings_SetAssistant">setAssistant</string>
+    <string name="Preference_MainSettings">Main Settings</string>
+    <string name="Preference_ImgurSettings">Imgur Settings</string>
+    <string name="Preference_ImgurSettings_EnablePrivateImgur">enablePrivate</string>
 </resources>
