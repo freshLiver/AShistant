@@ -4,7 +4,7 @@ A very simple android digital assistant app to get screenshot with some useful(f
 
 ## Screen Record
 
-<img src="./intro.mp4" alt="introduce-video" width="300"/>
+[Introduce-Video](https://user-images.githubusercontent.com/57722945/130888547-66415abe-d41f-4617-ab81-5039442fa03e.mp4)
 
 ## Dependencies
 
