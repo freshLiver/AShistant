@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">AShistant</string>
 
-    <string name="Preference_MainSettings_SetAssistant">setAssistant</string>
-    <string name="Preference_MainSettings">Main Settings</string>
-    <string name="Preference_ImgurSettings">Imgur Settings</string>
-    <string name="Preference_ImgurSettings_EnablePrivateImgur">enablePrivate</string>
+    <string name="Preference_MainSettings_SetAssistant">Preference_MainSettings_SetAssistant</string>
+    <string name="Preference_MainSettings">Preference_MainSettings</string>
+    <string name="Preference_ImgurSettings">Preference_ImgurSettings</string>
+    <string name="Preference_ImgurSettings_EnableAnonymous">Preference_ImgurSettings_EnableAnonymous</string>
+    <string name="Preference_ImgurSettings_ShowHistory">Preference_ImgurSettings_ShowHistory</string>
+    <string name="Preference_ImgurSettings_EditClientId">Preference_ImgurSettings_EditClientId</string>
+    <string name="Preference_ImgurSettings_EditAccessToken">Preference_ImgurSettings_EditAccessToken</string>
 </resources>
