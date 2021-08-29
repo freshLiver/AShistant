@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,14 +24,34 @@ import java.util.concurrent.Executors;
 
 public class LoadingDialog<ResultType> {
 
+    protected static final String DEFAULT_LOADING_TEXT = "Loading...";
+
 
     public static class Dialog extends DialogFragment {
+
+        protected String loadingText = DEFAULT_LOADING_TEXT;
+
 
         @Override
         public View onCreateView(@NonNull @NotNull LayoutInflater inflater,
                                  @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                                  @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.dialog_loading, container, false);
+            View view = inflater.inflate(R.layout.dialog_loading, container, false);
+
+            // set textview
+            ((TextView) view.findViewById(R.id.Dialog_loadingText)).setText(this.loadingText);
+
+            return view;
+        }
+
+
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            // let window size match parent to show all components.
+            Window window = this.getDialog().getWindow();
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
 
 
@@ -50,6 +72,9 @@ public class LoadingDialog<ResultType> {
     private final Executor executor;
     private final Handler uiThreadHandler;
 
+    private final long msLaunchDelay;
+    private final long msFinishDelay;
+    private final String dialogLoadingText;
     private final Callable<ResultType> asyncTask;
     private final Callback<ResultType> asyncCallback;
     private final Callback<ResultType> uiCallback;
@@ -61,6 +86,9 @@ public class LoadingDialog<ResultType> {
         this.executor = Executors.newSingleThreadExecutor();
         this.uiThreadHandler = new Handler(Looper.getMainLooper());
 
+        this.msLaunchDelay = builder.msLaunchDelay;
+        this.msFinishDelay = builder.msFinishDelay;
+        this.dialogLoadingText = builder.loadingText;
         this.asyncTask = builder.asyncTask;
         this.asyncCallback = builder.asyncCallback;
         this.uiCallback = builder.uiCallback;
@@ -73,6 +101,10 @@ public class LoadingDialog<ResultType> {
             // do async tasks
             this.executor.execute(() -> {
                 try {
+                    // launch delay
+                    if (this.msLaunchDelay > 0)
+                        Thread.sleep(this.msLaunchDelay);
+
                     // do background task here
                     this.result = this.asyncTask.call();
 
@@ -83,6 +115,10 @@ public class LoadingDialog<ResultType> {
                     // do ui callback task if exists
                     if (this.uiCallback != null)
                         this.uiThreadHandler.post(() -> this.uiCallback.onCompleted(this.result));
+
+                    // finish delay
+                    if (this.msFinishDelay > 0)
+                        Thread.sleep(this.msFinishDelay);
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -93,7 +129,10 @@ public class LoadingDialog<ResultType> {
                 }
             });
 
-            // show dialog soon after task executed
+            // set dialog loading text
+            this.dialog.loadingText = this.dialogLoadingText;
+
+            // show dialog soon after all tasks executed
             this.dialog.show(manager, "Task");
         }
     }
@@ -101,6 +140,9 @@ public class LoadingDialog<ResultType> {
 
     public static class Builder<ResultType> {
 
+        private long msLaunchDelay = 0;
+        private long msFinishDelay = 0;
+        private String loadingText = DEFAULT_LOADING_TEXT;
         private Callable<ResultType> asyncTask = null;
         private Callback<ResultType> asyncCallback = null;
         private Callback<ResultType> uiCallback = null;
@@ -108,6 +150,19 @@ public class LoadingDialog<ResultType> {
 
         public LoadingDialog<ResultType> build() {
             return new LoadingDialog<>(this);
+        }
+
+
+        public Builder<ResultType> setDelay(long msLaunchDelay, long msFinishDelay) {
+            this.msLaunchDelay = msLaunchDelay;
+            this.msFinishDelay = msFinishDelay;
+            return this;
+        }
+
+
+        public Builder<ResultType> setDialogLoadingText(String text) {
+            this.loadingText = text;
+            return this;
         }
 
 
